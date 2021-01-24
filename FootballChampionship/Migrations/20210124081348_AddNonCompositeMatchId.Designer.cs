@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballChampionship.Migrations
 {
     [DbContext(typeof(FootballChampionshipDbContext))]
-    [Migration("20210123181447_Initial")]
-    partial class Initial
+    [Migration("20210124081348_AddNonCompositeMatchId")]
+    partial class AddNonCompositeMatchId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,16 +23,23 @@ namespace FootballChampionship.Migrations
 
             modelBuilder.Entity("FootballChampionship.Domain.Model.Match", b =>
                 {
-                    b.Property<int>("FirstTeamId")
-                        .HasColumnType("int");
+                    b.Property<int>("MatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
-                    b.Property<int>("SecondTeamId")
+                    b.Property<int>("FirstTeamId")
                         .HasColumnType("int");
 
                     b.Property<int?>("MatchResultId")
                         .HasColumnType("int");
 
-                    b.HasKey("FirstTeamId", "SecondTeamId");
+                    b.Property<int>("SecondTeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MatchId");
+
+                    b.HasIndex("FirstTeamId");
 
                     b.HasIndex("MatchResultId")
                         .IsUnique()
@@ -73,12 +80,16 @@ namespace FootballChampionship.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("TeamName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("TeamId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Team");
                 });
@@ -86,7 +97,7 @@ namespace FootballChampionship.Migrations
             modelBuilder.Entity("FootballChampionship.Domain.Model.Match", b =>
                 {
                     b.HasOne("FootballChampionship.Domain.Model.Team", "FirstTeam")
-                        .WithMany("MathesAsFirst")
+                        .WithMany("MatchesAsFirst")
                         .HasForeignKey("FirstTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -125,9 +136,9 @@ namespace FootballChampionship.Migrations
 
             modelBuilder.Entity("FootballChampionship.Domain.Model.Team", b =>
                 {
-                    b.Navigation("MatchesAsSecond");
+                    b.Navigation("MatchesAsFirst");
 
-                    b.Navigation("MathesAsFirst");
+                    b.Navigation("MatchesAsSecond");
                 });
 #pragma warning restore 612, 618
         }

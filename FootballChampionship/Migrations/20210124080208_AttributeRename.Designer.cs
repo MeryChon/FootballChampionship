@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballChampionship.Migrations
 {
     [DbContext(typeof(FootballChampionshipDbContext))]
-    [Migration("20210123181447_Initial")]
-    partial class Initial
+    [Migration("20210124080208_AttributeRename")]
+    partial class AttributeRename
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,12 +73,16 @@ namespace FootballChampionship.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("TeamName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("TeamId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Team");
                 });
@@ -86,7 +90,7 @@ namespace FootballChampionship.Migrations
             modelBuilder.Entity("FootballChampionship.Domain.Model.Match", b =>
                 {
                     b.HasOne("FootballChampionship.Domain.Model.Team", "FirstTeam")
-                        .WithMany("MathesAsFirst")
+                        .WithMany("MatchesAsFirst")
                         .HasForeignKey("FirstTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -125,9 +129,9 @@ namespace FootballChampionship.Migrations
 
             modelBuilder.Entity("FootballChampionship.Domain.Model.Team", b =>
                 {
-                    b.Navigation("MatchesAsSecond");
+                    b.Navigation("MatchesAsFirst");
 
-                    b.Navigation("MathesAsFirst");
+                    b.Navigation("MatchesAsSecond");
                 });
 #pragma warning restore 612, 618
         }

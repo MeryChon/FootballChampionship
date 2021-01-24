@@ -5,9 +5,9 @@ namespace FootballChampionship.Domain.Model
     public class Team
     {
         public int TeamId { get; set; }
-        public string TeamName { get; set; }
+        public string Name { get; set; }
 
-        public ICollection<Match> MathesAsFirst { get; set; }
+        public ICollection<Match> MatchesAsFirst { get; set; }
         public ICollection<Match> MatchesAsSecond { get; set; }
     }
 }

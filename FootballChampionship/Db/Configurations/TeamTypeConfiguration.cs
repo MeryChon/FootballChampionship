@@ -9,9 +9,14 @@ namespace FootballChampionship.Db.Configurations
     {
         public void Configure(EntityTypeBuilder<Team> builder)
         {
-            builder.Property(p => p.TeamName)
+            builder.Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(100)
+                .IsUnicode(true);
+
+            builder
+                .HasIndex(t => t.Name)
+                .IsUnique();
         }
     }
 }

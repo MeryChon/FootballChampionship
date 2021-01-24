@@ -11,10 +11,10 @@ namespace FootballChampionship.Db.Configurations
     {
         public void Configure(EntityTypeBuilder<Match> builder)
         {
-            builder.HasKey(p => new { p.FirstTeamId, p.SecondTeamId });
+            builder.HasKey(p => p.MatchId);
 
             builder.HasOne(m => m.FirstTeam)
-                .WithMany(t => t.MathesAsFirst)
+                .WithMany(t => t.MatchesAsFirst)
                 .HasForeignKey(m => m.FirstTeamId)
                 .OnDelete(DeleteBehavior.Cascade);
 
