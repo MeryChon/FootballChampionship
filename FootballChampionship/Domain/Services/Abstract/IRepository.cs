@@ -1,12 +1,15 @@
 ﻿using FootballChampionship.Domain.Model;
+using System.Collections.Generic;
 
 namespace FootballChampionship.Domain.Services
 {
     public interface IRepository
     {
-        Team CreateNew(string teamName);
-        Match CreateNewMatch(Team firstTeam, Team secondTeam);
+        Championship CreateNewChampionship();
+        Team CreateNewTeam(string teamName);
+        Match CreateNewMatch(Team firstTeam, Team secondTeam, Championship championship);
         MatchResult SaveMatchResult(int matchId, MatchResultType resultType, int? winningTeamId);
         int GetTeamCount();
+        List<Team> GetAllTeams();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FootballChampionship.Db;
 using FootballChampionship.Domain.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FootballChampionship.Domain.Services.Implementation
@@ -14,10 +15,11 @@ namespace FootballChampionship.Domain.Services.Implementation
             _dbContext = dbContext;
         }
 
-        public Match CreateNewMatch(Team firstTeam, Team secondTeam)
+        public Match CreateNewMatch(Team firstTeam, Team secondTeam, Championship championship)
         {
-            var count = _dbContext.Set<Match>().Count(m => (m.FirstTeamId == firstTeam.TeamId && m.SecondTeamId == secondTeam.TeamId)
-            || (m.FirstTeamId == secondTeam.TeamId && m.SecondTeamId == firstTeam.TeamId));
+            var count = _dbContext.Set<Match>().Count(m => (m.ChampionshipId == championship.ChampionshipId
+                                                            && (m.FirstTeamId == firstTeam.TeamId && m.SecondTeamId == secondTeam.TeamId)
+                                                                    || (m.FirstTeamId == secondTeam.TeamId && m.SecondTeamId == firstTeam.TeamId)));
 
             if (count > 0)
             {
@@ -28,6 +30,7 @@ namespace FootballChampionship.Domain.Services.Implementation
             {
                 FirstTeam = firstTeam,
                 SecondTeam = secondTeam,
+                Championship = championship,
             };
             _dbContext.Add<Match>(newMatch);
             _dbContext.SaveChanges();
@@ -35,7 +38,7 @@ namespace FootballChampionship.Domain.Services.Implementation
             return newMatch;
         }
 
-        public Team CreateNew(string name)
+        public Team CreateNewTeam(string name)
         {
             int numTeamsWithName = _dbContext.Set<Team>().Count(t => t.Name == name);
             if (numTeamsWithName > 0)
@@ -82,6 +85,21 @@ namespace FootballChampionship.Domain.Services.Implementation
         public int GetTeamCount()
         {
             return _dbContext.Set<Team>().Count();
+        }
+
+        public Championship CreateNewChampionship()
+        {
+            Championship c = new Championship();
+            c.Desciprtion = "This is a new championship";
+            _dbContext.Set<Championship>().Add(c);
+            _dbContext.SaveChanges();
+
+            return c;
+        }
+
+        public List<Team> GetAllTeams()
+        {
+            return _dbContext.Set<Team>().ToList();
         }
     }
 }

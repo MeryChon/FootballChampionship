@@ -22,11 +22,8 @@ namespace FootballChampionship.Domain.Services.Implementation
             TeamsMinCount = teamsMinCount;
         }
 
-        public List<Team> CreateFromUserInput()
+        public void CreateFromUserInput()
         {
-            List<Team> result = new List<Team>();
-
-
             while (true)
             {
                 Console.WriteLine(ENTER_NAME_HINT);
@@ -50,26 +47,19 @@ namespace FootballChampionship.Domain.Services.Implementation
                 else
                 {
                     Team newTeam = CreateNewTeam(teamName.Trim());
-                    if (newTeam != null)
-                    {
-                        result.Add(newTeam);
-                    }
-                    else
+                    if (newTeam == null)
                     {
                         Console.WriteLine(String.Format(DUPLICATE_TEAM_NAME_WARNING, teamName));
                     }
-
                 }
             }
-
-            return result;
         }
 
         private Team CreateNewTeam(string teamName)
         {
             try
             {
-                return Repository.CreateNew(teamName);
+                return Repository.CreateNewTeam(teamName);
             }
             catch (Exception e)
             {
