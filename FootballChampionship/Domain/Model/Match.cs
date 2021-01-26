@@ -6,6 +6,9 @@ namespace FootballChampionship.Domain.Model
     {
         public int MatchId { get; set; }
 
+        public int ChampionshipId { get; set; }
+        public Championship Championship { get; set; }
+
         public int FirstTeamId { get; set; }
         public virtual Team FirstTeam { get; set; }
 

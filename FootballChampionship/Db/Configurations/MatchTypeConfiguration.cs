@@ -22,6 +22,11 @@ namespace FootballChampionship.Db.Configurations
                 .WithMany(t => t.MatchesAsSecond)
                 .HasForeignKey(m => m.SecondTeamId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(m => m.Championship)
+                .WithMany(c => c.Matches)
+                .HasForeignKey(m => m.ChampionshipId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
