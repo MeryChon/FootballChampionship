@@ -12,9 +12,12 @@ namespace FootballChampionship
         {
             IRepository repository = new Repository(new FootballChampionshipDbContext());
             int minNumTeams = 5;
-            ChampionshipManager championshipManager = new ChampionshipManager(new TeamCreator(repository, minNumTeams), repository);
+            ChampionshipManager championshipManager = new ChampionshipManager(new TeamCreator(repository, minNumTeams),
+                                                                                new MatchResultGatherer(repository),
+                                                                                repository);
 
             championshipManager.StartChampionship();
+            championshipManager.GatherMatchResults();
         }
     }
 }

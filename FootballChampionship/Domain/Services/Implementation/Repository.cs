@@ -57,21 +57,23 @@ namespace FootballChampionship.Domain.Services.Implementation
         }
 
 
-        public MatchResult SaveMatchResult(int matchId, MatchResultType resultType, int? winningTeamId)
+        public MatchResult SaveMatchResult(int matchId, MatchResultType resultType, Team winningTeam)
         {
-            MatchResult matchResult = _dbContext.Set<MatchResult>().Single(r => r.MatchId == matchId);
+            MatchResult matchResult;
+            int count = _dbContext.Set<MatchResult>().Count(r => r.MatchId == matchId);
 
-            if (matchResult != null)
+            if (count > 0)
             {
+                matchResult = _dbContext.Set<MatchResult>().Single(r => r.MatchId == matchId);
                 matchResult.ResultType = resultType;
-                matchResult.WinningTeamId = winningTeamId;
+                matchResult.WinningTeam = winningTeam;
             }
             else
             {
                 matchResult = new MatchResult
                 {
                     MatchId = matchId,
-                    WinningTeamId = winningTeamId
+                    WinningTeam = winningTeam,
                 };
 
                 _dbContext.Add<MatchResult>(matchResult);
@@ -100,6 +102,11 @@ namespace FootballChampionship.Domain.Services.Implementation
         public List<Team> GetAllTeams()
         {
             return _dbContext.Set<Team>().ToList();
+        }
+
+        public List<Match> GetAllMatches()
+        {
+            return _dbContext.Set<Match>().OrderBy(m => m.FirstTeam.Name).ThenBy(m => m.SecondTeam.Name).ToList();
         }
     }
 }

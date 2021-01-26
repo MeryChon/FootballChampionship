@@ -1,4 +1,5 @@
 ﻿using FootballChampionship.Domain.Model;
+using FootballChampionship.Domain.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,13 +10,15 @@ namespace FootballChampionship.Domain.Services.Implementation
     {
         private const string GREETING_MESSAGE = "Welcome to University Football Championship management console.\nPlease enter names of participating teams.";
 
-        private TeamCreator TeamCreator;
-        private IRepository Repository;
+        private readonly TeamCreator TeamCreator;
+        private IMatchResultGatherer MatchResultGatherer;
+        private readonly IRepository Repository;
         private Championship CurrentChampionship;
 
-        public ChampionshipManager(TeamCreator teamCreator, IRepository repository)
+        public ChampionshipManager(TeamCreator teamCreator, IMatchResultGatherer matchResultGatherer, IRepository repository)
         {
             TeamCreator = teamCreator;
+            MatchResultGatherer = matchResultGatherer;
             Repository = repository;
         }
 
@@ -59,9 +62,15 @@ namespace FootballChampionship.Domain.Services.Implementation
             }
         }
 
-        public void CouncludeChampionship()
+        public void GatherMatchResults()
         {
+            MatchResultGatherer.InformUser();
 
+            List<Match> allMatches = Repository.GetAllMatches();
+            foreach (Match m in allMatches)
+            {
+                MatchResultGatherer.CreateMatchResultFromUserInput(m);
+            }
         }
     }
 }

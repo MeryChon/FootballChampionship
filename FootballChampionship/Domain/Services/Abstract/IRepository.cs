@@ -8,8 +8,9 @@ namespace FootballChampionship.Domain.Services
         Championship CreateNewChampionship();
         Team CreateNewTeam(string teamName);
         Match CreateNewMatch(Team firstTeam, Team secondTeam, Championship championship);
-        MatchResult SaveMatchResult(int matchId, MatchResultType resultType, int? winningTeamId);
+        MatchResult SaveMatchResult(int matchId, MatchResultType resultType, Team winningTeam);
         int GetTeamCount();
         List<Team> GetAllTeams();
+        List<Match> GetAllMatches();
     }
 }
