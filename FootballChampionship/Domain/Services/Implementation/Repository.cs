@@ -78,5 +78,10 @@ namespace FootballChampionship.Domain.Services.Implementation
 
             return matchResult;
         }
+
+        public int GetTeamCount()
+        {
+            return _dbContext.Set<Team>().Count();
+        }
     }
 }

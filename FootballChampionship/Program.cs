@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FootballChampionship.Db;
+using FootballChampionship.Domain.Model;
+using FootballChampionship.Domain.Services;
+using FootballChampionship.Domain.Services.Implementation;
+using System.Collections.Generic;
 
 namespace FootballChampionship
 {
@@ -6,7 +10,11 @@ namespace FootballChampionship
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IRepository repository = new Repository(new FootballChampionshipDbContext());
+            int minNumTeams = 5;
+            ChampionshipManager championshipManager = new ChampionshipManager(new TeamCreator(repository, minNumTeams), repository);
+
+            championshipManager.StartChampionship();
         }
     }
 }

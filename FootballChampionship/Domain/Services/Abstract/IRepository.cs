@@ -7,5 +7,6 @@ namespace FootballChampionship.Domain.Services
         Team CreateNew(string teamName);
         Match CreateNewMatch(Team firstTeam, Team secondTeam);
         MatchResult SaveMatchResult(int matchId, MatchResultType resultType, int? winningTeamId);
+        int GetTeamCount();
     }
 }
