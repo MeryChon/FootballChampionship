@@ -126,7 +126,24 @@ namespace FootballChampionship.Domain.Services.Implementation
 
         public TeamChampionshipScore CreateTeamChampionshipResult(int championshipId, int teamId, int score)
         {
-            throw new NotImplementedException();
+            TeamChampionshipScore entry = _dbContext.Set<TeamChampionshipScore>().Find(championshipId, teamId);
+
+            if (entry is null)
+            {
+                entry = new TeamChampionshipScore
+                {
+                    ChampionshipId = championshipId,
+                    TeamId = teamId,
+                    Score = score
+                };
+                _dbContext.Add(entry);
+            }
+            else
+            {
+                entry.Score = score;
+            }
+            _dbContext.SaveChanges();
+            return entry;
         }
     }
 }

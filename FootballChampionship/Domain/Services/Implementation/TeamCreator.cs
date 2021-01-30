@@ -62,7 +62,7 @@ namespace FootballChampionship.Domain.Services.Implementation
             {
                 return Repository.CreateNewTeam(teamName);
             }
-            catch (Exception ignored)
+            catch (Exception)
             {
                 return null;
             }

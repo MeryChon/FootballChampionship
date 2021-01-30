@@ -81,7 +81,6 @@ namespace FootballChampionship.Domain.Services.Implementation
             {
                 ScoreCalculator.CalculateTeamScore(team.TeamId, CurrentChampionship.ChampionshipId);
             }
-
         }
     }
 }

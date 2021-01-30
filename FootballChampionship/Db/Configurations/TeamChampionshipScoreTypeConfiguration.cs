@@ -9,6 +9,8 @@ namespace FootballChampionship.Db.Configurations
     {
         public void Configure(EntityTypeBuilder<TeamChampionshipScore> builder)
         {
+            builder.HasKey(tcs => new { tcs.ChampionshipId, tcs.TeamId });
+
             builder
                 .HasOne(tcs => tcs.Championship)
                 .WithMany(c => c.TeamScores)
