@@ -9,6 +9,7 @@ namespace FootballChampionship.Domain.Model
 
         public ICollection<Match> MatchesAsFirst { get; set; }
         public ICollection<Match> MatchesAsSecond { get; set; }
-        public ICollection<MatchResult> MatchResultVictories { get; set; }
+        public ICollection<Match> MatchesAsWinner { get; set; }
+        public ICollection<TeamChampionshipScore> ChampionshipScores { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace FootballChampionship.Domain.Model
 {
@@ -9,5 +7,7 @@ namespace FootballChampionship.Domain.Model
         public int ChampionshipId { get; set; }
         public string Desciprtion { get; set; }
         public List<Match> Matches { get; set; }
+
+        public ICollection<TeamChampionshipScore> TeamScores { get; set; }
     }
 }

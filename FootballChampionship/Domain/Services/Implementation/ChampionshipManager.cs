@@ -54,7 +54,7 @@ namespace FootballChampionship.Domain.Services.Implementation
                         {
                             Repository.CreateNewMatch(t1, t2, CurrentChampionship);  // TODO should implement batch create?
                         }
-                        catch (Exception ignored)
+                        catch (Exception)
                         {
 
                         }
@@ -77,7 +77,7 @@ namespace FootballChampionship.Domain.Services.Implementation
         public void CalculateScores()
         {
             List<Team> allTeams = Repository.GetAllTeams();
-            foreach(Team team in allTeams)
+            foreach (Team team in allTeams)
             {
                 ScoreCalculator.CalculateTeamScore(team.TeamId, CurrentChampionship.ChampionshipId);
             }

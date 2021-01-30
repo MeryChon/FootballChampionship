@@ -1,6 +1,7 @@
 ﻿using FootballChampionship.Db;
 using FootballChampionship.Domain.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -89,40 +90,25 @@ namespace FootballChampionship.Domain.Services.Implementation
 
         // ---------------- Match Results
 
-        public MatchResult SaveMatchResult(int matchId, MatchResultType resultType, Team winningTeam)
+        public Match SaveMatchResult(int matchId, MatchResultType resultType, Team winningTeam)
         {
-            MatchResult matchResult;
-            int count = _dbContext.Set<MatchResult>().Count(r => r.MatchId == matchId);
+            Match match = _dbContext.Set<Match>().Find(matchId);
 
-            if (count > 0)
-            {
-                matchResult = _dbContext.Set<MatchResult>().Single(r => r.MatchId == matchId);
-                matchResult.ResultType = resultType;
-                matchResult.WinningTeam = winningTeam;
-            }
-            else
-            {
-                matchResult = new MatchResult
-                {
-                    MatchId = matchId,
-                    WinningTeam = winningTeam,
-                };
-
-                _dbContext.Add<MatchResult>(matchResult);
-            }
+            match.ResultType = resultType;
+            match.WinningTeam = winningTeam;
 
             _dbContext.SaveChanges();
 
-            return matchResult;
+            return match;
         }
 
-        public List<MatchResult> GetTeamMatchResults(int teamId, int championshipId)
+        public List<Match> GetTeamMatchResults(int teamId, int championshipId)
         {
-            List<MatchResult> all = _dbContext.Set<MatchResult>().ToList();
+            List<Match> all = _dbContext.Set<Match>().ToList();
 
-            return _dbContext.Set<MatchResult>()
-                .Where(r => r.Match.Championship.ChampionshipId == championshipId
-                            && (r.Match.FirstTeam.TeamId == teamId || r.Match.SecondTeam.TeamId == teamId))
+            return _dbContext.Set<Match>()
+                .Where(r => r.Championship.ChampionshipId == championshipId
+                            && (r.FirstTeam.TeamId == teamId || r.SecondTeam.TeamId == teamId))
                 .ToList();
         }
 

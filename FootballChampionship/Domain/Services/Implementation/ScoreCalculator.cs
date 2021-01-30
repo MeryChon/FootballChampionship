@@ -17,9 +17,9 @@ namespace FootballChampionship.Domain.Services.Implementation
 
         public TeamChampionshipScore CalculateTeamScore(int teamId, int championshipId)
         {
-            List<MatchResult> teamMatchResults = Repository.GetTeamMatchResults(teamId, championshipId);
+            List<Match> teamMatchResults = Repository.GetTeamMatchResults(teamId, championshipId);
             int score = 0;
-            foreach (MatchResult r in teamMatchResults)
+            foreach (Match r in teamMatchResults)
             {
                 if (r.ResultType == MatchResultType.VICTORY)
                 {

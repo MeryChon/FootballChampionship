@@ -1,6 +1,11 @@
 ﻿
 namespace FootballChampionship.Domain.Model
 {
+    public enum MatchResultType : int
+    {
+        VICTORY = 1,
+        DRAW = 0
+    }
 
     public class Match
     {
@@ -15,7 +20,9 @@ namespace FootballChampionship.Domain.Model
         public int SecondTeamId { get; set; }
         public virtual Team SecondTeam { get; set; }
 
-        public int? MatchResultId { get; set; }
-        public MatchResult MatchResult { get; set; }
+        public MatchResultType ResultType { get; set; }
+
+        public int? WinningTeamId { get; set; }
+        public Team WinningTeam { get; set; }
     }
 }

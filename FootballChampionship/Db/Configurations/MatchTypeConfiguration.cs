@@ -1,9 +1,6 @@
 ﻿using FootballChampionship.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FootballChampionship.Db.Configurations
 {
@@ -16,7 +13,7 @@ namespace FootballChampionship.Db.Configurations
             builder.HasOne(m => m.FirstTeam)
                 .WithMany(t => t.MatchesAsFirst)
                 .HasForeignKey(m => m.FirstTeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(m => m.SecondTeam)
                 .WithMany(t => t.MatchesAsSecond)
@@ -27,6 +24,15 @@ namespace FootballChampionship.Db.Configurations
                 .WithMany(c => c.Matches)
                 .HasForeignKey(m => m.ChampionshipId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .Property(m => m.ResultType)
+                .HasConversion<int>();
+
+            builder.HasOne(m => m.WinningTeam)
+                .WithMany(t => t.MatchesAsWinner)
+                .HasForeignKey(m => m.WinningTeamId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

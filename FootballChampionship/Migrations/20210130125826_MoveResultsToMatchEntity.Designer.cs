@@ -4,14 +4,16 @@ using FootballChampionship.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FootballChampionship.Migrations
 {
     [DbContext(typeof(FootballChampionshipDbContext))]
-    partial class FootballchampionshipsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210130125826_MoveResultsToMatchEntity")]
+    partial class MoveResultsToMatchEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,7 @@ namespace FootballChampionship.Migrations
                     b.HasOne("FootballChampionship.Domain.Model.Team", "FirstTeam")
                         .WithMany("MatchesAsFirst")
                         .HasForeignKey("FirstTeamId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootballChampionship.Domain.Model.Team", "SecondTeam")
@@ -136,9 +138,8 @@ namespace FootballChampionship.Migrations
                         .IsRequired();
 
                     b.HasOne("FootballChampionship.Domain.Model.Team", "WinningTeam")
-                        .WithMany("MatchesAsWinner")
-                        .HasForeignKey("WinningTeamId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .WithMany("MatchResultVictories")
+                        .HasForeignKey("WinningTeamId");
 
                     b.Navigation("Championship");
 
@@ -183,7 +184,7 @@ namespace FootballChampionship.Migrations
 
                     b.Navigation("MatchesAsSecond");
 
-                    b.Navigation("MatchesAsWinner");
+                    b.Navigation("MatchResultVictories");
                 });
 #pragma warning restore 612, 618
         }
