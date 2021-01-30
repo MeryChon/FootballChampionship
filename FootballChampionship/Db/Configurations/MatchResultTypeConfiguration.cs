@@ -22,6 +22,10 @@ namespace FootballChampionship.Db.Configurations
                 .WithMany(t => t.MatchResultVictories)
                 .HasForeignKey(r => r.WinningTeamId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                .Property(r => r.ResultType)
+                .HasConversion<int>();
         }
     }
 }

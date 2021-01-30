@@ -1,4 +1,5 @@
 ﻿using FootballChampionship.Domain.Model;
+using FootballChampionship.Domain.Services.Abstract;
 using System;
 using System.Collections.Generic;
 
@@ -61,7 +62,7 @@ namespace FootballChampionship.Domain.Services.Implementation
             {
                 return Repository.CreateNewTeam(teamName);
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
                 return null;
             }

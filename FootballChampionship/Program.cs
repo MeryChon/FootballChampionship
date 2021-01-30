@@ -14,10 +14,12 @@ namespace FootballChampionship
             int minNumTeams = 5;
             ChampionshipManager championshipManager = new ChampionshipManager(new TeamCreator(repository, minNumTeams),
                                                                                 new MatchResultGatherer(repository),
+                                                                                new ScoreCalculator(repository),
                                                                                 repository);
 
             championshipManager.StartChampionship();
             championshipManager.GatherMatchResults();
+            championshipManager.CalculateScores();
         }
     }
 }

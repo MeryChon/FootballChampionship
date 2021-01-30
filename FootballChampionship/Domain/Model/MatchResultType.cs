@@ -1,8 +1,8 @@
 ﻿namespace FootballChampionship.Domain.Model
 {
-    public enum MatchResultType
+    public enum MatchResultType : int
     {
-        VICTORY,
-        DRAW
+        VICTORY = 1,
+        DRAW = 0
     }
 }

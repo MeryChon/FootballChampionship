@@ -15,6 +15,46 @@ namespace FootballChampionship.Domain.Services.Implementation
             _dbContext = dbContext;
         }
 
+
+        // ---------------- Teams
+        public Team CreateNewTeam(string name)
+        {
+            int numTeamsWithName = _dbContext.Set<Team>().Count(t => t.Name == name);
+            if (numTeamsWithName > 0)
+            {
+                throw new Exception("Team with name " + name + "already exists!");
+            }
+
+            Team newTeam = new Team
+            {
+                Name = name
+            };
+            _dbContext.Add<Team>(newTeam);
+            _dbContext.SaveChanges();
+
+            return newTeam;
+        }
+
+        public int GetTeamCount()
+        {
+            return _dbContext.Set<Team>().Count();
+        }
+
+
+        public List<Team> GetAllTeams()
+        {
+            return _dbContext.Set<Team>().ToList();
+        }
+
+
+        public List<int> GetAllTeamIds()
+        {
+            return _dbContext.Set<Team>().Select(t => t.TeamId).ToList();
+        }
+
+
+        // ---------------- Matches
+
         public Match CreateNewMatch(Team firstTeam, Team secondTeam, Championship championship)
         {
             var count = _dbContext.Set<Match>().Count(m => (m.ChampionshipId == championship.ChampionshipId
@@ -38,24 +78,16 @@ namespace FootballChampionship.Domain.Services.Implementation
             return newMatch;
         }
 
-        public Team CreateNewTeam(string name)
+        public List<Match> GetAllMatches(int championshipId)
         {
-            int numTeamsWithName = _dbContext.Set<Team>().Count(t => t.Name == name);
-            if (numTeamsWithName > 0)
-            {
-                throw new Exception("Team with name " + name + "already exists!");
-            }
-
-            Team newTeam = new Team
-            {
-                Name = name
-            };
-            _dbContext.Add<Team>(newTeam);
-            _dbContext.SaveChanges();
-
-            return newTeam;
+            return _dbContext.Set<Match>()
+                .Where(m => m.Championship.ChampionshipId == championshipId)
+                .OrderBy(m => m.FirstTeam.Name)
+                .ThenBy(m => m.SecondTeam.Name)
+                .ToList();
         }
 
+        // ---------------- Match Results
 
         public MatchResult SaveMatchResult(int matchId, MatchResultType resultType, Team winningTeam)
         {
@@ -84,10 +116,17 @@ namespace FootballChampionship.Domain.Services.Implementation
             return matchResult;
         }
 
-        public int GetTeamCount()
+        public List<MatchResult> GetTeamMatchResults(int teamId, int championshipId)
         {
-            return _dbContext.Set<Team>().Count();
+            List<MatchResult> all = _dbContext.Set<MatchResult>().ToList();
+
+            return _dbContext.Set<MatchResult>()
+                .Where(r => r.Match.Championship.ChampionshipId == championshipId
+                            && (r.Match.FirstTeam.TeamId == teamId || r.Match.SecondTeam.TeamId == teamId))
+                .ToList();
         }
+
+        // ---------------- Championships
 
         public Championship CreateNewChampionship()
         {
@@ -99,14 +138,9 @@ namespace FootballChampionship.Domain.Services.Implementation
             return c;
         }
 
-        public List<Team> GetAllTeams()
+        public TeamChampionshipScore CreateTeamChampionshipResult(int championshipId, int teamId, int score)
         {
-            return _dbContext.Set<Team>().ToList();
-        }
-
-        public List<Match> GetAllMatches()
-        {
-            return _dbContext.Set<Match>().OrderBy(m => m.FirstTeam.Name).ThenBy(m => m.SecondTeam.Name).ToList();
+            throw new NotImplementedException();
         }
     }
 }

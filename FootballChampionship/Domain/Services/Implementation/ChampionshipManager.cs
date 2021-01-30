@@ -2,7 +2,6 @@
 using FootballChampionship.Domain.Services.Abstract;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FootballChampionship.Domain.Services.Implementation
 {
@@ -11,14 +10,16 @@ namespace FootballChampionship.Domain.Services.Implementation
         private const string GREETING_MESSAGE = "Welcome to University Football Championship management console.\nPlease enter names of participating teams.";
 
         private readonly TeamCreator TeamCreator;
-        private IMatchResultGatherer MatchResultGatherer;
+        private readonly IMatchResultGatherer MatchResultGatherer;
+        private readonly IScoreCalculator ScoreCalculator;
         private readonly IRepository Repository;
         private Championship CurrentChampionship;
 
-        public ChampionshipManager(TeamCreator teamCreator, IMatchResultGatherer matchResultGatherer, IRepository repository)
+        public ChampionshipManager(TeamCreator teamCreator, IMatchResultGatherer matchResultGatherer, IScoreCalculator scoreCalculator, IRepository repository)
         {
             TeamCreator = teamCreator;
             MatchResultGatherer = matchResultGatherer;
+            ScoreCalculator = scoreCalculator;
             Repository = repository;
         }
 
@@ -66,11 +67,21 @@ namespace FootballChampionship.Domain.Services.Implementation
         {
             MatchResultGatherer.InformUser();
 
-            List<Match> allMatches = Repository.GetAllMatches();
+            List<Match> allMatches = Repository.GetAllMatches(CurrentChampionship.ChampionshipId);
             foreach (Match m in allMatches)
             {
                 MatchResultGatherer.CreateMatchResultFromUserInput(m);
             }
+        }
+
+        public void CalculateScores()
+        {
+            List<Team> allTeams = Repository.GetAllTeams();
+            foreach(Team team in allTeams)
+            {
+                ScoreCalculator.CalculateTeamScore(team.TeamId, CurrentChampionship.ChampionshipId);
+            }
+
         }
     }
 }
