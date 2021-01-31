@@ -55,7 +55,14 @@ namespace FootballChampionship.Domain.Services.Implementation
                 try
                 {
                     result = Int32.Parse(userInput);
-                    break;
+                    if (result == 1 || result == 2)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
                 }
                 catch
                 {
@@ -64,7 +71,6 @@ namespace FootballChampionship.Domain.Services.Implementation
             }
 
             return result == 1 ? match.FirstTeam : match.SecondTeam;
-
         }
 
 

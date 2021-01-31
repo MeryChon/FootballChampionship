@@ -9,7 +9,9 @@ namespace FootballChampionship.Domain.Model
         public int TeamId { get; set; }
         public Team Team { get; set; }
 
-        public int Score { get; set; }
+        public int? Score { get; set; }
+
+        public int? Rating { get; set; }
 
     }
 }

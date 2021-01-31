@@ -12,14 +12,20 @@ namespace FootballChampionship.Domain.Services.Implementation
         private readonly TeamCreator TeamCreator;
         private readonly IMatchResultGatherer MatchResultGatherer;
         private readonly IScoreCalculator ScoreCalculator;
+        private readonly IRatingCalculator RatingCalculator;
         private readonly IRepository Repository;
         private Championship CurrentChampionship;
 
-        public ChampionshipManager(TeamCreator teamCreator, IMatchResultGatherer matchResultGatherer, IScoreCalculator scoreCalculator, IRepository repository)
+        public ChampionshipManager(TeamCreator teamCreator,
+            IMatchResultGatherer matchResultGatherer,
+            IScoreCalculator scoreCalculator,
+            IRatingCalculator ratingCalculator,
+            IRepository repository)
         {
             TeamCreator = teamCreator;
             MatchResultGatherer = matchResultGatherer;
             ScoreCalculator = scoreCalculator;
+            RatingCalculator = ratingCalculator;
             Repository = repository;
         }
 
@@ -34,6 +40,12 @@ namespace FootballChampionship.Domain.Services.Implementation
             {
                 CreateMatches();
             }
+        }
+
+        internal void CalculateRating()
+        {
+            RatingCalculator.CalculateRating(CurrentChampionship.ChampionshipId);
+            RatingCalculator.PrintRating(CurrentChampionship.ChampionshipId);
         }
 
         private void CreateChampionshipObject()

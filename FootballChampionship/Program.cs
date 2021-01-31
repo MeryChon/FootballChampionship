@@ -15,11 +15,13 @@ namespace FootballChampionship
             ChampionshipManager championshipManager = new ChampionshipManager(new TeamCreator(repository, minNumTeams),
                                                                                 new MatchResultGatherer(repository),
                                                                                 new ScoreCalculator(repository),
+                                                                                new RatingCalculator(repository),
                                                                                 repository);
 
             championshipManager.StartChampionship();
             championshipManager.GatherMatchResults();
             championshipManager.CalculateScores();
+            championshipManager.CalculateRating();
         }
     }
 }

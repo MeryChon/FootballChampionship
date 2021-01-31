@@ -14,5 +14,8 @@ namespace FootballChampionship.Domain.Services
         List<Match> GetAllMatches(int championshipId);
         List<Match> GetTeamMatchResults(int teamId, int championshipId);
         TeamChampionshipScore CreateTeamChampionshipResult(int championshipId, int teamId, int score);
+        List<TeamChampionshipScore> GetTeamsScoresForChampionship(int championshipId);
+        void SaveTeamChampionshipRatings(int championshipId, List<TeamChampionshipScore> teamScores);
+        List<TeamChampionshipScore> GetChampionshipRatings(int championshipId);
     }
 }

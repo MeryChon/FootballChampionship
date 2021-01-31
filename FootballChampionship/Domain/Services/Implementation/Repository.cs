@@ -104,8 +104,6 @@ namespace FootballChampionship.Domain.Services.Implementation
 
         public List<Match> GetTeamMatchResults(int teamId, int championshipId)
         {
-            List<Match> all = _dbContext.Set<Match>().ToList();
-
             return _dbContext.Set<Match>()
                 .Where(r => r.Championship.ChampionshipId == championshipId
                             && (r.FirstTeam.TeamId == teamId || r.SecondTeam.TeamId == teamId))
@@ -144,6 +142,34 @@ namespace FootballChampionship.Domain.Services.Implementation
             }
             _dbContext.SaveChanges();
             return entry;
+        }
+
+        public List<TeamChampionshipScore> GetTeamsScoresForChampionship(int championshipId)
+        {
+            List<TeamChampionshipScore> result = _dbContext.Set<TeamChampionshipScore>()
+                .Where(tcs => tcs.ChampionshipId == championshipId)
+                .ToList();
+
+            return result;
+        }
+
+        public void SaveTeamChampionshipRatings(int championshipId, List<TeamChampionshipScore> teamScores)
+        {
+            foreach (TeamChampionshipScore teamChampionshipScore in teamScores)
+            {
+                TeamChampionshipScore tcs = _dbContext.Set<TeamChampionshipScore>().Find(championshipId, teamChampionshipScore.TeamId);
+                tcs.Rating = teamChampionshipScore.Rating;
+            }
+
+            _dbContext.SaveChanges();
+        }
+
+        public List<TeamChampionshipScore> GetChampionshipRatings(int championshipId)
+        {
+            return _dbContext.Set<TeamChampionshipScore>()
+                .Where(tcs => tcs.ChampionshipId == championshipId)
+                .OrderBy(tcs => tcs.Rating)
+                .ToList();
         }
     }
 }
